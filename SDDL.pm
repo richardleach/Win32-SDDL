@@ -1,14 +1,9 @@
 
-###  WARNING!  ###
-
-#This is a very early version.
-#I make no guarantees that the structure will not change, although I'm pretty
-#sure I've got the one I want to stick with.
-
 package Win32::SDDL;
 use Win32::OLE;
 use strict;
 use warnings;
+my $VERSION = '0.01';
 
 my $CONSTANTS = {};
 my $TRUSTEE_CONSTANTS = {};
@@ -43,8 +38,6 @@ sub Import{
         die("'$self' is not a valid Win32::OSSDL object!\n".ref($self)."\n");
     }
 
-    #Sometimes they come back empty when using SC.exe.  Are they really empty,
-    #or does that mean I was denied access?
     unless($self->{SDString}){
         return 2;
     }
@@ -58,7 +51,6 @@ sub Import{
         $updateConstants[1] = \%trustees;
     }
 
-    #Load the constants if they haven't been already
     if($updateConstants[0] || $updateConstants[1]){
         Win32::SDDL::GetSDConstants($SDType,@updateConstants);
     }
@@ -79,6 +71,7 @@ sub Import{
 #Initializes the constants
 sub _initialize{
     my $type = shift;
+    $type ||= '';
     my $constants = shift;
     my $trusteeConstants = shift;
 
@@ -284,18 +277,20 @@ Win32::SDDL - SDDL parsing module for Windows
 
 =head1 SYNOPSIS
 
-use Win32::SDDL;
+    use Win32::SDDL;
 
-my $sddl = Win32::SDDL->new('service');
+    my $sddl = Win32::SDDL->new( 'service' );
 
-$sddl->Import('D:(A;;CCLCSWLOCRRC;;;AU)(A;;CCLCSWRPLOCRRC;;;PU)');
+    $sddl->Import( 'D:(A;;CCLCSWLOCRRC;;;AU)(A;;CCLCSWRPLOCRRC;;;PU)' );
 
-foreach my $account(@{$sddl->{Trustees}}){
+    foreach my $mask( @{$sddl->{ACL}} ){
+        $trustees{ $mask->{Trustee} } = 1;
+    }
 
-    print "$account...".scalar(@{$sddl->{$account}})." entries found.\n";
+    my @trustees = sort keys %trustees;
 
-};
 
+    print scalar( @{$sddl->{ACL}} )." entries found.\n";
 
 
 =head1 DESCRIPTION
@@ -312,24 +307,24 @@ I<NOTE: For resources relating to SDDL, see the SEE ALSO section of this documen
 
 =over 5
 
-=item Win32::SDDL->new(*type*);
+=item Win32::SDDL->new( *type* );
 
 Example:
 
-C<my $sddl = Win32::SDDL->new('service');>
+C<< my $sddl = Win32::SDDL->new( 'service' ); >>
 
 Creates a new Win32::SDDL object.  Optionally, an object type can be provided.
 The only optional type supported at present is 'service'.  This will change
 the value of certain constants as they have a different meaning for services
 than they do for files, registry keys, or other objects.
 
-=item $sddl->Import($sddl_string);
+=item $sddl->Import( $sddl_string );
 
-Example:
+    Example:
 
-C<my $sddl_string = 'D:(A;;CCLCSWLOCRRC;;;AU)(A;;CCLCSWRPLOCRRC;;;PU)';>
+    my $sddl_string = 'D:(A;;CCLCSWLOCRRC;;;AU)(A;;CCLCSWRPLOCRRC;;;PU)';
 
-C<$sddl->Import($sddl_string) or die("Error!  Unable to import '$sddl_string'!\n");>
+    $sddl->Import( $sddl_string ) or die( "Error!  Unable to import '$sddl_string'!\n" );
 
 =back
 
@@ -346,10 +341,6 @@ The currently loaded SDDL string
 =item $sddl->{Type}
 
 The type of SDDL string (changes the description of some constants).
-
-=item $sddl->{SDString}
-
-The currently loaded SDDL string
 
 =item $sddl->{ACL}
 
@@ -384,6 +375,45 @@ A GUID representing the parent object type if it exists.
 The Trustee name.
 
 =back
+
+=back
+
+=head1 UPDATE HISTORY
+
+=over 5
+
+=item July 20, 2006  v0.02  Fixed various documentation problems
+
+This is the first draft of the module for CPAN.
+
+=back
+
+=head1 BUGS/CHANGES NEEDED
+
+=over 5
+
+=item Makefile
+
+This module does not have a makefile
+
+=item Move Win32::SDDL::ACE package to its own module
+
+I plan to move the Win32::SDDL::ACE package to its own module
+
+=item Create PPM file
+
+I would also like to make this module available via PPM
+
+=item Replace Win32::OLE Dependency
+
+Right now I'm using WMI to translate SIDs to account names.  I would like to
+find a way to import the Win32 API with a minimal footprint to reduce the size
+of the module for people who distribute packaged executables and archives of
+their scripts.
+
+=item B<Have any questions/suggestions?>
+
+Please contact me if you have any requests or suggestions.
 
 =back
 
