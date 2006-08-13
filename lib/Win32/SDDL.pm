@@ -1,9 +1,7 @@
+$VERSION = '0.04';
 
 package Win32::SDDL;
 use Win32::OLE;
-use strict;
-use warnings;
-my $VERSION = '0.01';
 
 my $CONSTANTS = {};
 my $TRUSTEE_CONSTANTS = {};
@@ -356,7 +354,7 @@ The type of ACE (SYSTEM_AUDIT,ACCESS_ALLOW, or ACCESS_DENY).
 A GUID representing the object type for the ACE (usually empty).
 
 =item InheritedObjectType
-
+h
 A GUID representing the parent object type if it exists.
 
 =item Trustee
