@@ -35,24 +35,11 @@ sub Import{
 
     #Make sure that it's a valid object.
     unless(ref($self) eq 'Win32::SDDL'){
-        die("'$self' is not a valid Win32::OSSDL object!\n".ref($self)."\n");
+        die("'$self' is not a valid Win32::SDDL object!\n".ref($self)."\n");
     }
 
     unless($self->{SDString}){
         return 2;
-    }
-
-    #Only reload the constants if they don't already exist
-    if(!keys %const){
-        $updateConstants[0] = \%const;
-    }
-
-    if(!keys %trustees){
-        $updateConstants[1] = \%trustees;
-    }
-
-    if($updateConstants[0] || $updateConstants[1]){
-        Win32::SDDL::GetSDConstants($SDType,@updateConstants);
     }
 
     #Check that the SDDL string is in a valid format
@@ -63,7 +50,8 @@ sub Import{
 
     #Cycle through the ACEs
     foreach my $sec(@rights){
-        push @{$self->{ACL}},Win32::SDDL::ACE->new($sec,\%const,\%trustees);
+        push @{$self->{ACL}},Win32::SDDL::ACE->new($sec,\%trustees,\%const) || die("Unable to parse '$sec' for Win32::SDDL::ACE object creation!\n");
+    }
     return 1;
 }
 
@@ -223,6 +211,7 @@ sub _translateSID{
 }
 
 package Win32::SDDL::ACE;
+my @ISA = qw(Win32::SDDL);
 
 sub new{
     my $class = shift;
@@ -259,14 +248,14 @@ sub new{
         #Cache the results in %trustees
         if($trustees{$self->{Trustee}}){
             $self->{Trustee} = $trustees{$self->{Trustee}};
-        }elsif(my $account = _translateSID($self->{Trustee})){
+        }elsif(my $account = Win32::SDDL::_translateSID($self->{Trustee})){
             $trustees{$self->{Trustee}} = $account;
             $self->{Trustee} = $account;
         }
-    }
-    bless($self) || die("Unable to bless '$self'!\n");
-    return $self;
+        bless($self) || die("Unable to bless '$self'!\n");
+        return $self;
 }
+
 
 1;
 
@@ -381,6 +370,10 @@ The Trustee name.
 =head1 UPDATE HISTORY
 
 =over 5
+
+=item August 13, 2006 v0.03
+
+Added Win32::SDDL::ACE package and fixed bugs with the constants
 
 =item July 20, 2006  v0.02  Fixed various documentation problems
 
