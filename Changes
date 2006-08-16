@@ -1,5 +1,22 @@
 Revision history for Win32-SDDL
 
-0.01    Date/time
-        First version, released on an unsuspecting world.
+0.02    July 20, 2006 
 
+	* Fixed various documentation problems.  This is the first draft of the module 
+          for CPAN.
+
+0.02	August 13, 2006
+
+        * Added Win32::SDDL::ACE package and fixed bugs with the constants
+
+0.04	August 14, 2006
+
+	* Added sample script SvcInfo.pl
+
+0.05	August 16, 2006
+
+	* Removed inheritance to Win32::SDDL, since it only needed it for the 
+	  _translateSID method. I'll reconsider whether inheritance is important later
+	  if I decide to add more methods to the Win32::SDDL::ACE objects
+	
+	* Added requirement for Win32::OLE to distro.
