@@ -1,5 +1,5 @@
-Win32-SDDL 
-Version 0.04
+Win32-SDDL
+Version 0.06
 
 Win32::SDDL was created to aid in the translation of SDDL strings used in Windows
 to describe access control lists.  SDDL stands for Security Descriptor Definition

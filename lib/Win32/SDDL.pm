@@ -1,4 +1,4 @@
-$VERSION = '0.04';
+$VERSION = '0.06';
 
 package Win32::SDDL;
 use Win32::OLE;
@@ -209,7 +209,6 @@ sub _translateSID{
 }
 
 package Win32::SDDL::ACE;
-my @ISA = qw(Win32::SDDL);
 
 sub new{
     my $class = shift;
@@ -298,7 +297,7 @@ I<NOTE: For resources relating to SDDL, see the SEE ALSO section of this documen
 
 Example:
 
-C<< my $sddl = Win32::SDDL->new( 'service' ); >>
+    my $sddl = Win32::SDDL->new( 'service' );
 
 Creates a new Win32::SDDL object.  Optionally, an object type can be provided.
 The only optional type supported at present is 'service'.  This will change
@@ -307,7 +306,7 @@ than they do for files, registry keys, or other objects.
 
 =item $sddl->Import( $sddl_string );
 
-    Example:
+Example:
 
     my $sddl_string = 'D:(A;;CCLCSWLOCRRC;;;AU)(A;;CCLCSWRPLOCRRC;;;PU)';
 
@@ -354,7 +353,7 @@ The type of ACE (SYSTEM_AUDIT,ACCESS_ALLOW, or ACCESS_DENY).
 A GUID representing the object type for the ACE (usually empty).
 
 =item InheritedObjectType
-h
+
 A GUID representing the parent object type if it exists.
 
 =item Trustee
@@ -367,33 +366,11 @@ The Trustee name.
 
 =head1 UPDATE HISTORY
 
-=over 5
-
-=item August 13, 2006 v0.03
-
-Added Win32::SDDL::ACE package and fixed bugs with the constants
-
-=item July 20, 2006  v0.02  Fixed various documentation problems
-
-This is the first draft of the module for CPAN.
-
-=back
+=item See the Changes file.
 
 =head1 BUGS/CHANGES NEEDED
 
 =over 5
-
-=item Makefile
-
-This module does not have a makefile
-
-=item Move Win32::SDDL::ACE package to its own module
-
-I plan to move the Win32::SDDL::ACE package to its own module
-
-=item Create PPM file
-
-I would also like to make this module available via PPM
 
 =item Replace Win32::OLE Dependency
 

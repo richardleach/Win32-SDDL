@@ -20,3 +20,8 @@ Revision history for Win32-SDDL
 	  if I decide to add more methods to the Win32::SDDL::ACE objects
 	
 	* Added requirement for Win32::OLE to distro.
+
+0.06	August 17, 2006
+
+	* I screwed up the last distro, so this is mostly the same as the last one, only
+          it actually works.
