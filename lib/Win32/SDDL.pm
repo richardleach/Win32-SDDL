@@ -1,5 +1,7 @@
 package Win32::SDDL;
-$VERSION = '0.06';
+use strict;
+use warnings;
+our $VERSION = '0.06';
 use Win32::OLE;
 
 my $CONSTANTS = {};
@@ -208,6 +210,8 @@ sub _translateSID{
 }
 
 package Win32::SDDL::ACE;
+use strict;
+use warnings;
 
 sub new{
     my $class = shift;
