@@ -1,6 +1,5 @@
-$VERSION = '0.06';
-
 package Win32::SDDL;
+$VERSION = '0.06';
 use Win32::OLE;
 
 my $CONSTANTS = {};
@@ -366,7 +365,11 @@ The Trustee name.
 
 =head1 UPDATE HISTORY
 
+=over
+
 =item See the Changes file.
+
+=back
 
 =head1 BUGS/CHANGES NEEDED
 
