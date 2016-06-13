@@ -1,7 +1,7 @@
 package Win32::SDDL;
 use strict;
 use warnings;
-our $VERSION = '0.06';
+our $VERSION = '0.07';
 use Win32::OLE;
 
 my $CONSTANTS = {};
@@ -17,7 +17,7 @@ sub new{
     $self->{SDString} = '';
     $self->{ACL} = {};
     _initialize($self->{Type},$CONSTANTS,$TRUSTEE_CONSTANTS) or die("Unable to initialize Constants!\n");
-    bless($self) || die("Unable to bless '$self'!\n");
+    bless($self, $class) || die("Unable to bless '$self'!\n");
     return $self;
 }
 
@@ -44,7 +44,7 @@ sub Import{
     #Check that the SDDL string is in a valid format
     my @rights = $self->{SDString} =~ /\((.*?)\)/g;
     unless($self->{SDString}){
-        return undef;
+        return;     # Returns empty list (list context) or undef (scalar context)
     }
 
     #Cycle through the ACEs
@@ -236,7 +236,8 @@ sub new{
         }
 
         #Translate the ACE flags
-        my @flags = ($self->{_flags} =~ /\w\w/g) if $self->{_flags};
+        my @flags;
+        @flags = ($self->{_flags} =~ /\w\w/g) if $self->{_flags};
         foreach my $flag(@flags){
             if($const{$flag}){
                 $flag = $const{$flag};
@@ -252,7 +253,7 @@ sub new{
             $trustees{$self->{Trustee}} = $account;
             $self->{Trustee} = $account;
         }
-        bless($self) || die("Unable to bless '$self'!\n");
+        bless($self,$class) || die("Unable to bless '$self'!\n");
         return $self;
 }
 

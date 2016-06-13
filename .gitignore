@@ -1,0 +1,15 @@
+Win32-SDDL-*
+.build
+tmp
+*.patch
+
+.gitnxtver_cache
+
+# avoid temp and backup files
+*~
+*#
+*.bak
+*.old
+*.rej
+*.swp
+*.tmp
