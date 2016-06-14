@@ -1,4 +1,5 @@
 package Win32::SDDL;
+# ABSTRACT: Parser for the Windows Security Descriptor Definition Language (SDDL)
 use strict;
 use warnings;
 our $VERSION = '0.07';
@@ -261,9 +262,6 @@ sub new{
 1;
 
 
-=head1 NAME
-
-Win32::SDDL - SDDL parsing module for Windows
 
 =head1 SYNOPSIS
 
@@ -376,37 +374,28 @@ The Trustee name.
 
 =back
 
-=head1 BUGS/CHANGES NEEDED
+=head1 FORTHCOMING CHANGES
 
 =over 5
 
-=item Replace Win32::OLE Dependency
+=item Modular SID Translation
 
-Right now I'm using WMI to translate SIDs to account names.  I would like to
-find a way to import the Win32 API with a minimal footprint to reduce the size
-of the module for people who distribute packaged executables and archives of
-their scripts.
-
-=item B<Have any questions/suggestions?>
-
-Please contact me if you have any requests or suggestions.
+As originally written, the module uses WMI to translate SIDs to account names.
+The intention is to allow support for arbitrary translators, with the following
+to be provided by this module: WMI, native API call, LDAP, Offline.
 
 =back
 
 =head1 SEE ALSO
+http://windowssdk.msdn.microsoft.com/en-us/library/ms723280.aspx
 
-L<http://windowssdk.msdn.microsoft.com/en-us/library/ms723280.aspx>
+=head1 COPYRIGHT AND LICENSE
 
-=head1 COPYRIGHT
+This software is copyright (c) 2016 by Richard Leach.
+This software is copyright (c) 2006 by Tim Johnson.
 
-Copyright 2006 Tim Johnson
-
-This module is free software; you can redistribute it and/or
-modify it under the same terms as Perl itself.
-
-=head1 AUTHOR
-
-Tim Johnson <tojo2000@tojo2000.com>
+This is free software; you can redistribute it and/or modify it under
+the same terms as the Perl 5 programming language system itself.
 
 =cut
 
